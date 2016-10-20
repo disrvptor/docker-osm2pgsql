@@ -1,43 +1,44 @@
-# DOCKER-VERSION 1.5.0
-# VERSION 0.2
+FROM alpine
+MAINTAINER Guy Pascarella <guy.pascarella@gmail.com>
 
-FROM debian:wheezy
-MAINTAINER James Badger <james@jamesbadger.ca>
+#ENV DEBIAN_FRONTEND noninteractive
 
-ENV DEBIAN_FRONTEND noninteractive
+RUN echo "@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
+    apk update
 
-RUN apt-get update && apt-get install -y \
-    autoconf \
-    automake \
-    g++ \
-    git-core \
-    libboost-dev \
-    libboost-filesystem-dev \
-    libboost-system-dev \
-    libboost-thread-dev \
-    libbz2-dev \
-    libgeos++-dev \
-    libgeos-dev \
-    liblua5.2-dev \
-    libpq-dev \
-    libproj-dev \
-    libprotobuf-c0-dev \
-    libtool \
-    libxml2-dev \
-    lua5.2 \
+RUN apk add --no-cache \
     make \
-    protobuf-c-compiler &&\
-    rm -rf /var/lib/apt/lists/*
+    cmake \
+    expat-dev \
+    g++ \
+    git \
+    boost-dev \
+    boost-filesystem \
+    boost-system \
+    boost-thread \
+    libbz2 \
+    proj4-dev@testing \
+    geos-dev@testing \
+    lua5.2-dev \
+    libpq \
+    lua5.2
+
+#    protobuf-c-dev \
+#    libtool \
+#    libxml2-dev \
+#    protobuf-c
+#    libgeos++-dev \
 
 ENV HOME /root
-ENV OSM2PGSQL_VERSION 0.87.2
+ENV OSM2PGSQL_VERSION 0.90.1
 
 RUN mkdir src &&\
     cd src &&\
     git clone --depth 1 --branch $OSM2PGSQL_VERSION https://github.com/openstreetmap/osm2pgsql.git &&\
     cd osm2pgsql &&\
-    ./autogen.sh &&\
-    ./configure &&\
+    mkdir build &&\
+    cd build &&\
+    cmake .. &&\
     make &&\
     make install &&\
     cd /root &&\
