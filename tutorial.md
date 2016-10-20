@@ -16,7 +16,7 @@ This will start the database container in the background and will return a hash 
 
 Once you see the text "Done init for OSM. One final restart.", the server will start up and be ready to serve requests to the container. Next download and build my `osm2pgsql` image from Github:
 
-    $ sudo docker build -t openfirmware/osm2pgsql github.com/openfirmware/docker-osm2pgsql.git
+    $ sudo docker build -t disrvptor/osm2pgsql github.com/disrvptor/docker-osm2pgsql.git
 
 This will take a few minutes to download and compile the osm2pgsql tool.
 
@@ -26,7 +26,7 @@ Once you have your PBF file, place it in a directory in your home folder; we wil
 
 Your `osm2pgsql` image should be finished building soon, so we will start up an import. There are a few options you should tweak depending on your host. Let's take a look at the command (don't run it yet!) and see what each option does:
 
-    $ docker run -i -t --rm --link postgres-osm:pg -v ~/osm:/osm openfirmware/osm2pgsql -c 'osm2pgsql --create --slim --hstore --cache 2000 --number-processes 2 --database $PG_ENV_OSM_DB --username $PG_ENV_OSM_USER --host pg --port $PG_PORT_5432_TCP_PORT /osm/city-extract.osm.pbf'
+    $ docker run -i -t --rm --link postgres-osm:pg -v ~/osm:/osm disrvptor/osm2pgsql -c 'osm2pgsql --create --slim --hstore --cache 2000 --number-processes 2 --database $PG_ENV_OSM_DB --username $PG_ENV_OSM_USER --host pg --port $PG_PORT_5432_TCP_PORT /osm/city-extract.osm.pbf'
 
 The options in the command:
 
