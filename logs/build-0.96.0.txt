@@ -1,0 +1,331 @@
+Sending build context to Docker daemon  131.1kB
+Step 1/8 : FROM alpine:3.8
+3.8: Pulling from library/alpine
+cd784148e348: Pulling fs layer
+cd784148e348: Verifying Checksum
+cd784148e348: Download complete
+cd784148e348: Pull complete
+Digest: sha256:46e71df1e5191ab8b8034c5189e325258ec44ea739bba1e5645cff83c9048ff1
+Status: Downloaded newer image for alpine:3.8
+ ---> 3f53bb00af94
+Step 2/8 : LABEL maintainer="guy.pascarella@gmail.com"
+ ---> Running in fb073d273789
+Removing intermediate container fb073d273789
+ ---> 19f8e7d4cf62
+Step 3/8 : ENV HOME /root
+ ---> Running in 0e97dbf62248
+Removing intermediate container 0e97dbf62248
+ ---> 0b42229944e4
+Step 4/8 : ENV OSM2PGSQL_VERSION 0.96.0
+ ---> Running in bde212c571b5
+Removing intermediate container bde212c571b5
+ ---> 4c7ddd00c872
+Step 5/8 : RUN echo "@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && 	apk update
+ ---> Running in b9de9fb7c5b7
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/community/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/edge/testing/x86_64/APKINDEX.tar.gz
+v3.8.2-3-g7d67c17120 [http://dl-cdn.alpinelinux.org/alpine/v3.8/main]
+v3.8.1-181-gf4058e1a22 [http://dl-cdn.alpinelinux.org/alpine/v3.8/community]
+v3.8.0-4063-gb30acdfebd [http://dl-cdn.alpinelinux.org/alpine/edge/testing]
+OK: 13008 distinct packages available
+Removing intermediate container b9de9fb7c5b7
+ ---> de8c0b858e02
+Step 6/8 : RUN apk add --no-cache 	libgcc 	libstdc++ 	boost-filesystem 	boost-system 	boost-thread 	expat 	libbz2 	postgresql-libs 	libpq 	geos@testing 	proj4@testing 	lua5.2 	lua5.2-libs
+ ---> Running in ae6b7b0c0063
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/community/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/edge/testing/x86_64/APKINDEX.tar.gz
+(1/16) Installing boost-system (1.66.0-r0)
+(2/16) Installing libgcc (6.4.0-r9)
+(3/16) Installing boost-filesystem (1.66.0-r0)
+(4/16) Installing boost-thread (1.66.0-r0)
+(5/16) Installing expat (2.2.5-r0)
+(6/16) Installing libstdc++ (6.4.0-r9)
+(7/16) Installing geos@testing (3.7.0-r1)
+(8/16) Installing libbz2 (1.0.6-r6)
+(9/16) Installing db (5.3.28-r0)
+(10/16) Installing libsasl (2.1.26-r13)
+(11/16) Installing libldap (2.4.46-r0)
+(12/16) Installing libpq (10.5-r0)
+(13/16) Installing lua5.2-libs (5.2.4-r7)
+(14/16) Installing lua5.2 (5.2.4-r7)
+(15/16) Installing postgresql-libs (10.5-r0)
+(16/16) Installing proj4@testing (5.0.1-r1)
+Executing busybox-1.28.4-r2.trigger
+OK: 13 MiB in 29 packages
+Removing intermediate container ae6b7b0c0063
+ ---> adda3edc4acb
+Step 7/8 : RUN apk add --no-cache 	make 	cmake 	expat-dev 	g++ 	git 	boost-dev 	zlib-dev 	bzip2-dev 	proj4-dev@testing 	geos-dev@testing 	lua5.2-dev 	postgresql-dev &&	cd $HOME &&	mkdir src &&	cd src &&	git clone --depth 1 --branch $OSM2PGSQL_VERSION https://github.com/openstreetmap/osm2pgsql.git &&	cd osm2pgsql &&	mkdir build &&	cd build &&	cmake -DLUA_LIBRARY=/usr/lib/liblua-5.2.so.0 .. &&	make &&	make install &&	cd $HOME &&	rm -rf src &&	apk --purge del 	make 	cmake 	git 	g++ 	boost-dev 	gdbm 	python3 	boost-python3 	python 	binutils 	gcc 	lua5.2-dev 	bzip2-dev 	expat-dev 	musl-dev 	libc-dev 	zlib-dev 	openssl-dev 	postgresql-dev 	proj4-dev
+ ---> Running in 293b4be9b990
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/community/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/edge/testing/x86_64/APKINDEX.tar.gz
+(1/62) Installing linux-headers (4.4.6-r2)
+(2/62) Installing boost-date_time (1.66.0-r0)
+(3/62) Installing boost-regex (1.66.0-r0)
+(4/62) Installing boost-graph (1.66.0-r0)
+(5/62) Installing boost-iostreams (1.66.0-r0)
+(6/62) Installing boost-math (1.66.0-r0)
+(7/62) Installing boost-prg_exec_monitor (1.66.0-r0)
+(8/62) Installing boost-program_options (1.66.0-r0)
+(9/62) Installing libffi (3.2.1-r4)
+(10/62) Installing gdbm (1.13-r1)
+(11/62) Installing xz-libs (5.2.4-r0)
+(12/62) Installing ncurses-terminfo-base (6.1_p20180818-r1)
+(13/62) Installing ncurses-terminfo (6.1_p20180818-r1)
+(14/62) Installing ncurses-libs (6.1_p20180818-r1)
+(15/62) Installing readline (7.0.003-r0)
+(16/62) Installing sqlite-libs (3.24.0-r0)
+(17/62) Installing python3 (3.6.6-r0)
+(18/62) Installing boost-python3 (1.66.0-r0)
+(19/62) Installing python2 (2.7.15-r1)
+(20/62) Installing boost-python (1.66.0-r0)
+(21/62) Installing boost-random (1.66.0-r0)
+(22/62) Installing boost-serialization (1.66.0-r0)
+(23/62) Installing boost-signals (1.66.0-r0)
+(24/62) Installing boost-unit_test_framework (1.66.0-r0)
+(25/62) Installing boost-wave (1.66.0-r0)
+(26/62) Installing boost-wserialization (1.66.0-r0)
+(27/62) Installing boost (1.66.0-r0)
+(28/62) Installing boost-dev (1.66.0-r0)
+(29/62) Installing bzip2-dev (1.0.6-r6)
+(30/62) Installing libattr (2.4.47-r7)
+(31/62) Installing libacl (2.2.52-r5)
+(32/62) Installing lz4-libs (1.8.2-r0)
+(33/62) Installing libarchive (3.3.2-r3)
+(34/62) Installing ca-certificates (20171114-r3)
+(35/62) Installing nghttp2-libs (1.32.0-r0)
+(36/62) Installing libssh2 (1.8.0-r3)
+(37/62) Installing libcurl (7.61.1-r1)
+(38/62) Installing rhash-libs (1.3.6-r1)
+(39/62) Installing libuv (1.20.2-r0)
+(40/62) Installing cmake (3.11.1-r2)
+(41/62) Installing pkgconf (1.5.3-r0)
+(42/62) Installing expat-dev (2.2.5-r0)
+(43/62) Installing binutils (2.30-r5)
+(44/62) Installing gmp (6.1.2-r1)
+(45/62) Installing isl (0.18-r0)
+(46/62) Installing libgomp (6.4.0-r9)
+(47/62) Installing libatomic (6.4.0-r9)
+(48/62) Installing mpfr3 (3.1.5-r1)
+(49/62) Installing mpc1 (1.0.3-r1)
+(50/62) Installing gcc (6.4.0-r9)
+(51/62) Installing musl-dev (1.1.19-r10)
+(52/62) Installing libc-dev (0.7.1-r0)
+(53/62) Installing g++ (6.4.0-r9)
+(54/62) Installing geos-dev@testing (3.7.0-r1)
+(55/62) Installing pcre2 (10.31-r0)
+(56/62) Installing git (2.18.1-r0)
+(57/62) Installing lua5.2-dev (5.2.4-r7)
+(58/62) Installing make (4.2.1-r2)
+(59/62) Installing libressl-dev (2.7.4-r0)
+(60/62) Installing postgresql-dev (10.5-r0)
+(61/62) Installing proj4-dev@testing (5.0.1-r1)
+(62/62) Installing zlib-dev (1.2.11-r1)
+Executing busybox-1.28.4-r2.trigger
+Executing ca-certificates-20171114-r3.trigger
+OK: 572 MiB in 91 packages
+[91mCloning into 'osm2pgsql'...
+[0m[91mNote: checking out 'b0a2fadfaa0b02a3b11bdbea1e0937383de0890b'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m-- The C compiler identification is GNU 6.4.0
+-- The CXX compiler identification is GNU 6.4.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Building osm2pgsql 0.96.0
+-- Looking for include file termios.h
+-- Looking for include file termios.h - found
+-- Looking for include file libgen.h
+-- Looking for include file libgen.h - found
+-- Looking for include file unistd.h
+-- Looking for include file unistd.h - found
+-- Found ZLIB: /lib/libz.so (found version "1.2.11") 
+-- Looking for pthread.h
+-- Looking for pthread.h - found
+-- Looking for pthread_create
+-- Looking for pthread_create - found
+-- Found Threads: TRUE  
+-- Found Protozero: /root/src/osm2pgsql/contrib/protozero/include (found suitable version "1.6.2", minimum required is "1.5.1") 
+-- Found EXPAT: /usr/lib/libexpat.so (found version "2.2.5") 
+-- Found BZip2: /usr/lib/libbz2.so (found version "1.0.6") 
+-- Looking for BZ2_bzCompressInit
+-- Looking for BZ2_bzCompressInit - found
+-- Found Osmium: /root/src/osm2pgsql/contrib/libosmium (found suitable version "2.14.0", minimum required is "2.14") 
+-- Found Lua: /usr/lib/liblua-5.2.so.0;/usr/lib/libm.a (found version "5.2.4") 
+-- Boost version: 1.66.0
+-- Found the following Boost libraries:
+--   system
+--   filesystem
+-- Found PostgreSQL: /usr/lib/libpq.so (found version "10.5") 
+[91mLibraries used to build: /usr/lib/libboost_system-mt.so/usr/lib/libboost_filesystem-mt.so/usr/lib/libpq.so/lib/libz.so/usr/lib/libexpat.so/usr/lib/libbz2.so/usr/lib/libproj.so/usr/lib/liblua-5.2.so.0/usr/lib/libm.a
+[0m-- Looking for clock_gettime in rt
+-- Looking for clock_gettime in rt - found
+[91mActive compiler flags:
+[0m-- Added test: test-expire-tiles...
+-- Added test: test-hstore-match-only...
+-- Added test: test-middle-flat...
+-- Added test: test-middle-pgsql...
+-- Added test: test-middle-ram...
+-- Added test: test-options-database...
+-- Added test: test-options-parse...
+-- Added test: test-options-projection...
+-- Added test: test-output-multi-line-storage...
+-- Added test: test-output-multi-line...
+-- Added test: test-output-multi-point-multi-table...
+-- Added test: test-output-multi-point...
+-- Added test: test-output-multi-poly-trivial...
+-- Added test: test-output-multi-polygon...
+-- Added test: test-output-multi-tags...
+-- Added test: test-output-pgsql-area...
+-- Added test: test-output-pgsql-schema...
+-- Added test: test-output-pgsql-tablespace...
+-- Added test: test-output-pgsql-validgeom...
+-- Added test: test-output-pgsql-z_order...
+-- Added test: test-output-pgsql...
+-- Added test: test-parse-diff...
+-- Added test: test-parse-xml2...
+-- Added test: test-persistent-node-cache...
+-- Added test: test-pgsql-escape...
+-- Added test: test-wildcard-match...
+-- Found PythonInterp: /usr/bin/python (found version "2.7.15") 
+-- Added test: regression-test-pbf (needs Python with psycopg2 module)
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /root/src/osm2pgsql/build
+Scanning dependencies of target osm2pgsql_lib
+[  3%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/expire-tiles.cpp.o
+[  6%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/geometry-processor.cpp.o
+[  9%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/id-tracker.cpp.o
+[ 12%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/middle-pgsql.cpp.o
+[ 15%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/middle-ram.cpp.o
+[ 18%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/middle.cpp.o
+[ 21%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/node-persistent-cache.cpp.o
+[ 24%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/node-ram-cache.cpp.o
+[ 27%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/options.cpp.o
+[ 30%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/osmdata.cpp.o
+[ 33%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/osmium-builder.cpp.o
+[ 36%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/output-gazetteer.cpp.o
+[ 39%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/output-multi.cpp.o
+[ 42%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/output-null.cpp.o
+[ 45%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/output-pgsql.cpp.o
+[ 48%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/output.cpp.o
+[ 51%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/parse-osmium.cpp.o
+[ 54%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/pgsql.cpp.o
+[ 57%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/processor-line.cpp.o
+[ 60%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/processor-point.cpp.o
+[ 63%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/processor-polygon.cpp.o
+[ 66%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/reprojection.cpp.o
+[ 69%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/sprompt.cpp.o
+[ 72%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/table.cpp.o
+[ 75%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/taginfo.cpp.o
+[ 78%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/tagtransform.cpp.o
+[ 81%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/tagtransform-c.cpp.o
+[ 84%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/util.cpp.o
+[ 87%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/wildcmp.cpp.o
+[ 90%] Building CXX object CMakeFiles/osm2pgsql_lib.dir/tagtransform-lua.cpp.o
+[ 93%] Linking CXX static library libosm2pgsql.a
+[ 93%] Built target osm2pgsql_lib
+Scanning dependencies of target osm2pgsql
+[ 96%] Building CXX object CMakeFiles/osm2pgsql.dir/osm2pgsql.cpp.o
+[100%] Linking CXX executable osm2pgsql
+[100%] Built target osm2pgsql
+[ 93%] Built target osm2pgsql_lib
+[100%] Built target osm2pgsql
+Install the project...
+-- Install configuration: "RelWithDebInfo"
+-- Installing: /usr/local/bin/osm2pgsql
+-- Installing: /usr/local/share/man/man1/osm2pgsql.1
+-- Installing: /usr/local/share/osm2pgsql/default.style
+-- Installing: /usr/local/share/osm2pgsql/empty.style
+(1/61) Purging boost-dev (1.66.0-r0)
+(2/61) Purging linux-headers (4.4.6-r2)
+(3/61) Purging boost-date_time (1.66.0-r0)
+(4/61) Purging boost-graph (1.66.0-r0)
+(5/61) Purging boost-iostreams (1.66.0-r0)
+(6/61) Purging boost-math (1.66.0-r0)
+(7/61) Purging boost-prg_exec_monitor (1.66.0-r0)
+(8/61) Purging boost-program_options (1.66.0-r0)
+(9/61) Purging boost-python3 (1.66.0-r0)
+(10/61) Purging boost-python (1.66.0-r0)
+(11/61) Purging boost-random (1.66.0-r0)
+(12/61) Purging boost-signals (1.66.0-r0)
+(13/61) Purging boost-unit_test_framework (1.66.0-r0)
+(14/61) Purging boost-wave (1.66.0-r0)
+(15/61) Purging boost-wserialization (1.66.0-r0)
+(16/61) Purging boost (1.66.0-r0)
+(17/61) Purging bzip2-dev (1.0.6-r6)
+(18/61) Purging cmake (3.11.1-r2)
+(19/61) Purging expat-dev (2.2.5-r0)
+(20/61) Purging g++ (6.4.0-r9)
+(21/61) Purging gcc (6.4.0-r9)
+(22/61) Purging binutils (2.30-r5)
+(23/61) Purging libatomic (6.4.0-r9)
+(24/61) Purging libgomp (6.4.0-r9)
+(25/61) Purging libc-dev (0.7.1-r0)
+(26/61) Purging musl-dev (1.1.19-r10)
+(27/61) Purging git (2.18.1-r0)
+(28/61) Purging lua5.2-dev (5.2.4-r7)
+(29/61) Purging make (4.2.1-r2)
+(30/61) Purging postgresql-dev (10.5-r0)
+(31/61) Purging libressl-dev (2.7.4-r0)
+(32/61) Purging proj4-dev (5.0.1-r1)
+(33/61) Purging zlib-dev (1.2.11-r1)
+(34/61) Purging boost-regex (1.66.0-r0)
+(35/61) Purging python3 (3.6.6-r0)
+(36/61) Purging python2 (2.7.15-r1)
+(37/61) Purging libffi (3.2.1-r4)
+(38/61) Purging gdbm (1.13-r1)
+(39/61) Purging libarchive (3.3.2-r3)
+(40/61) Purging xz-libs (5.2.4-r0)
+(41/61) Purging readline (7.0.003-r0)
+(42/61) Purging ncurses-libs (6.1_p20180818-r1)
+(43/61) Purging ncurses-terminfo (6.1_p20180818-r1)
+(44/61) Purging ncurses-terminfo-base (6.1_p20180818-r1)
+(45/61) Purging sqlite-libs (3.24.0-r0)
+(46/61) Purging boost-serialization (1.66.0-r0)
+(47/61) Purging libacl (2.2.52-r5)
+(48/61) Purging libattr (2.4.47-r7)
+(49/61) Purging lz4-libs (1.8.2-r0)
+(50/61) Purging libcurl (7.61.1-r1)
+(51/61) Purging ca-certificates (20171114-r3)
+Executing ca-certificates-20171114-r3.post-deinstall
+(52/61) Purging nghttp2-libs (1.32.0-r0)
+(53/61) Purging libssh2 (1.8.0-r3)
+(54/61) Purging rhash-libs (1.3.6-r1)
+(55/61) Purging libuv (1.20.2-r0)
+(56/61) Purging pkgconf (1.5.3-r0)
+(57/61) Purging mpc1 (1.0.3-r1)
+(58/61) Purging mpfr3 (3.1.5-r1)
+(59/61) Purging isl (0.18-r0)
+(60/61) Purging gmp (6.1.2-r1)
+(61/61) Purging pcre2 (10.31-r0)
+Executing busybox-1.28.4-r2.trigger
+OK: 21 MiB in 30 packages
+Removing intermediate container 293b4be9b990
+ ---> 9086d802df8b
+Step 8/8 : ENTRYPOINT ["/bin/sh"]
+ ---> Running in 6625aa31a62a
+Removing intermediate container 6625aa31a62a
+ ---> 4309ea880329
+Successfully built 4309ea880329
+Successfully tagged disrvptor/osm2pgsql:0.96.0
