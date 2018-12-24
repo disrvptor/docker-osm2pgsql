@@ -8,7 +8,7 @@ Can be built from the Dockerfile:
 
     # docker build -t disrvptor/osm2pgsql github.com/disrvptor/docker-osm2pgsql.git
 
-This currently builds `osm2pgsql` for Alpine from a specific tag; see the [Dockerfile] for the specific version. Alternatively, specify the tag and download the image from the [Docker Hub](https://hub.docker.com/).
+This currently builds `osm2pgsql` for Alpine from a specific tag; see the [Dockerfile](Dockerfile) for the specific version. Alternatively, specify the tag and download the image from the [Docker Hub](https://hub.docker.com/).
 
 ## Running osm2pgsql
 
@@ -21,7 +21,7 @@ When used with a postgres-osm container, it can import data directly into the da
     # docker run -it --rm --link postgres-osm:pg -v ~/osm:/osm disrvptor/osm2pgsql \
       -c 'osm2pgsql --create --slim --cache 2000 --database $PG_ENV_OSM_DB --username $PG_ENV_OSM_USER --host pg --port $PG_PORT_5432_TCP_PORT /osm/extract.osm.pbf'
 
-For more information on running an import, please see [tutorial.md]. If you have a particular scenario in mind, contact me and I will try to create a guide for that situation.
+For more information on running an import, please see [tutorial.md](tutorial.md). If you have a particular scenario in mind, contact me and I will try to create a guide for that situation.
 
 ## Related Docker Images
 
