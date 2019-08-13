@@ -19,7 +19,7 @@ RUN apk add --no-cache \
 	postgresql-libs \
 	libpq \
 	geos@testing \
-	proj4@testing \
+	proj@testing \
 	lua5.2 \
 	lua5.2-libs
 
@@ -33,7 +33,7 @@ RUN apk add --no-cache \
 	boost-dev \
 	zlib-dev \
 	bzip2-dev \
-	proj4-dev@testing \
+	proj-dev@testing \
 	geos-dev@testing \
 	lua5.2-dev \
 	postgresql-dev &&\
