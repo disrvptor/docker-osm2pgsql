@@ -69,6 +69,6 @@ RUN apk add --no-cache \
 	zlib-dev \
 	openssl-dev \
 	postgresql-dev \
-	proj4-dev
+	proj-dev
 
 ENTRYPOINT ["/bin/sh"]
